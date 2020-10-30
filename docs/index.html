@@ -1,0 +1,112 @@
+<html>
+	<head>
+		<link rel="stylesheet" href="styles.css">
+		<title>P</title>
+		<style>
+			body {
+            margin: 0;
+        }
+
+        canvas {
+            display: block;
+        }
+
+        .lf {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            background-color: #FFB200;
+            border-radius: 5px;
+            position: absolute;
+            top: 50%;
+            right: 25%;
+        }
+
+        .rt {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 5px;
+            background-color: #FFB200;
+            position: absolute;
+            top: 50%;
+            right: 75%;
+        }
+			
+		</style>
+	</head>
+	<body>
+		
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r119/three.min.js"></script>
+		<script src="DeviceOrientationControls.js"></script>
+		<script src="inflate.min.js"></script>
+		<script src="FBXLoader.js"></script>
+		<script src="entorn.js"></script>
+		<script src="iluminacio.js"></script>
+		<script src="enemigo.js"></script>
+		<script src="controles.js"></script>
+		<script src="sonido.js"></script>
+		<script src="rayCast.js"></script>
+		<script src="OrbitControls.js"></script>
+		<script src="StereoEffect.js"></script>
+		<script src="move.js"></script>	
+		<script>
+
+			//------cámara-------
+			var scene = new THREE.Scene();
+			var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 0.1, 1000 );
+			camera.position.z = -750;
+			//camera.position.z = 550;
+			camera.position.y = -60;
+			camera.position.x = -550;
+			camera.rotation.y=180 * Math.PI / 180;
+			//camera.rotation.y=3;
+			var listener = new THREE.AudioListener();
+			camera.add( listener );
+
+			//------renderer-------
+			var renderer = new THREE.WebGLRenderer();
+			renderer.setSize( window.innerWidth, window.innerHeight );
+			renderer.shadowMap.enabled = true;
+			renderer.shadowMap.type = THREE.BasicShadowMap;
+			document.body.appendChild( renderer.domElement );
+
+			var effect = new THREE.StereoEffect( renderer );
+
+			//-------sonido--------
+			var sonido = new Sonido();
+
+			//------controles-------
+			var controls = new THREE.OrbitControls( camera, renderer.domElement );
+			controls.update();
+			//var control = new Controles();
+
+			//-------entorno--------
+			var m_entorn=new Entorn();
+
+			//-----iluminación------
+			var m_iluminacio=new Iluminacio();
+
+			//------enemigos-------
+			var m_enemigo = new Enemigo();
+
+			//-------raycast-------
+			var rcast=new RayCast();
+
+			//----animate&renderer-----
+			var animate = function () {
+				requestAnimationFrame( animate );
+				//control.update();
+				controls.update();
+				rcast.update();
+				//effect.render( scene, camera );
+				renderer.render( scene, camera );
+				Move();
+			};
+			animate();
+
+		</script>
+		<div class="lf"></div>
+		<div class="rt"></div>
+	</body>
+</html>
